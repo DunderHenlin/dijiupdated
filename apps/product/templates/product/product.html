@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ product.title }} | {% endblock %}
+
+{% block content %}
+    {% if product.image %}
+        <figure >
+            <img  class="img-thumbnail" src="{{ product.image.url }}">
+        </figure>
+    {% endif %}
+
+    <h1 class="title">{{ product.title }}, Rs {{ product.price }}</h1>
+
+    <p class="mb-6"><span class="text-white bg-dark">{{ product.vendor.name }}</span></p>
+
+    <p>{{ product.description }}</p>
+
+    <hr>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" action=".">
+        {% csrf_token %}
+       <div>
+                <input type="number" name="quantity" class="input" value="1" min="1" max="{{ product.available }}">
+                <button class="btn btn-dark">Add to cart</button>
+        </div>
+    </form>
+ <hr>
+    <h1 class="title">Similar Products:</h1><br><hr>
+
+    {% if similar_products %}
+    <div class="row">
+            {% for product in similar_products %}
+            
+               
+                   
+                    <div class="col-lg-4">
+                        <img class="thumbnail" src="{{product.get_thumbnail }}">
+                        <div class="box-element product">
+                            <h6><strong>{{product.title}}</strong></h6>
+                            <hr>
+                
+                            <!-- <form style="display: inline;" method="post" action=".">
+                                {% csrf_token %}
+                                    <input style="visibility: collapse;" type="number" name="quantity" value="1" class="input" min="1"><br>
+                                    <button style="display: inline;" class="btn btn-dark">Add to cart</button>
+                            </form> -->
+                            
+                            <a class="btn btn-outline-success" style="display: inline;" href="{% url 'product' product.category.slug product.slug %}">View</a>
+                            <h4 style="display: inline-block;float: right; font-size: medium;"><strong>Rs.{{product.price}}</strong></h4>
+                
+                        </div>
+                    </div>
+                    {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Become vendor | {% endblock %}
+
+{% block content %}
+    <h1 class="title">Sign Up</h1>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="field">
+            <div class="control">
+                <button class="btn btn-dark">Sign up</button>
+            </div>
+        </div>
+    </form>
+
+    <hr>    
+
+    <p>Already have an account? <a class="link-primary" href="{% url 'login' %}">Log in</a></p>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Vendor admin | {% endblock %}
+
+{% block content %}
+    <div class="box">
+        <h1 class="title">Administrator - {{ vendor.name }}</h1>
+
+        <strong>My balance: </strong>Rs {{ vendor.get_balance }}<br>
+        <strong>My paid amount: </strong>Rs {{ vendor.get_paid_amount }}
+
+        <hr>
+        <a href="{% url 'add_product' %}" class="btn btn-warning"><i class="fas fa-plus-square"></i> Add product</a>
+        <a href="{% url 'edit_vendor' %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Log out</a>
+    </div>
+<br>
+
+    <div class="box">
+        <h2>My products</h2>
+
+        {% if products %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td><a href="{% url 'product' product.category.slug product.slug %}">{{ product.title }}</a></td>
+                            <td>Rs {{ product.price }}</td>
+                            <td><a href="{% url 'product' product.category.slug product.slug %}">Edit</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You don't have any products yet...</p>
+        {% endif %}
+    </div>
+
+    <div class="box">
+        <h2 class="is-size-3 mb-4">My orders</h2>
+    
+        {% if orders %}
+            {% for order in orders %}
+                <div class="{% if order.fully_paid %}table-secondary{% else %}table-secondary{% endif %} mb-2 p-4">
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <h3 class="is-size-4">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</h3>
+                        </div>
+    
+                        <div class="column is-12">
+                            <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br>
+                            <b>Address:</b> {{ order.address }}<br>
+                            <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
+                            <b>E-mail:</b> {{ order.email }}<br>
+                            <b>Phone:</b> {{ order.phone }}
+    
+                            <table class="table is-fullwidth mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <!-- <th>Paid</th> -->
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+    
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                        {% if item.vendor == request.user.vendor %}
+                                            <tr>
+                                                <td>{{ item.product.title }}</td>
+                                                <td>Rs {{ item.product.price }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <!-- <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td> -->
+                                                <td>Rs {{ item.get_total_price }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
