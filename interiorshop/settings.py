@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'tuxik&w(xnck86#t!asbp67u$##glq!#08y35%2kxrt!-3i%0n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dijimark.herokuapp.com']
 
 STRIPE_PUB_KEY = 'pk_test_51IKzn9HBggJj764JyyLGtJ43GhooxQ0XZaYroNpxHUOtNttIYhTZ0KTv23H29ZtGTnXrwYXLu0nis5PKMAOZqFog00pGM2SQvN'
 STRIPE_SECRET_KEY = 'sk_test_51IKzn9HBggJj764JXkW0rSdH8Ma3eZr7kjz0HVg44Lciz60RHwMNo15FeKYW0RLOJxVgLqVp2D24XejUB7HSu7i9004ySIPvPy'
